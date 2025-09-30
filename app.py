@@ -18,8 +18,9 @@ def sendemail():
         message = request.form["message"]
 
         # Get credentials from environment variables
-        your_email = os.environ.get("rajumanurcs036@gmail.com")
-        your_password = os.environ.get("shjx awjj smty oxhe")
+        your_email = os.environ.get("EMAIL_USER")
+        your_password = os.environ.get("EMAIL_PASS")
+
 
         if not your_email or not your_password:
             print("Email credentials are missing!")
