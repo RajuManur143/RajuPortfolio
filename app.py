@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
 from email.message import EmailMessage
 import smtplib
+import os
 
 app = Flask(__name__)
 
@@ -16,9 +17,13 @@ def sendemail():
         email = request.form["_replyto"]
         message = request.form["message"]
 
-        # Replace with your Gmail credentials
-        your_email = "rajumanurcs036@gmail.com"
-        your_password = "shjx awjj smty oxhe"  # Use an App Password if 2FA is enabled
+        # Get credentials from environment variables
+        your_email = os.environ.get("rajumanurcs036@gmail.com")
+        your_password = os.environ.get("shjx awjj smty oxhe")
+
+        if not your_email or not your_password:
+            print("Email credentials are missing!")
+            return redirect("/")
 
         # Set up the SMTP server
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -28,7 +33,9 @@ def sendemail():
 
         # Compose the email
         msg = EmailMessage()
-        msg.set_content(f"Name: {name}\nEmail: {email}\nSubject: {subject}\nMessage: {message}")
+        msg.set_content(
+            f"Name: {name}\nEmail: {email}\nSubject: {subject}\nMessage: {message}"
+        )
         msg["To"] = your_email  # Send the email to yourself
         msg["From"] = your_email
         msg["Subject"] = subject
